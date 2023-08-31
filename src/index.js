@@ -28,12 +28,7 @@ export const Plugin = {
         unfreeze(node, 'parentNode')
         return node
       } else {
-        let prev = node.previousSibling,
-          next = node.nextSibling
-        let ret = orgRemoveChild.call(this, node)
-        if (prev) freeze(prev, 'nextSibling', next)
-        if (next) freeze(next, 'previousSibling', prev)
-        return ret
+        return orgRemoveChild.call(this, node)
       }
     }
 
