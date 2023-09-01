@@ -27,8 +27,15 @@ export const Plugin = {
 
         unfreeze(node, 'parentNode')
         return node
+      } else if (node.__isFragmentSibling__) {
+        let prev = node.previousSibling,
+            next = node.nextSibling;
+        let ret = orgRemoveChild.call(this, node);
+        if (prev) freeze(prev, 'nextSibling', next);
+        if (next) freeze(next, 'previousSibling', prev);
+        return ret;
       } else {
-        return orgRemoveChild.call(this, node)
+        return orgRemoveChild.call(this, node);
       }
     }
 

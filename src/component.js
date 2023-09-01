@@ -69,13 +69,23 @@ export default {
       })
     }
 
-    let next = container.nextSibling
-    parent.insertBefore(tpl, container, true)
-    parent.removeChild(container)
-    freeze(container, 'parentNode', parent)
-    freeze(container, 'nextSibling', next)
-    if (next)
-        freeze(next, 'previousSibling', container)
+    const next = container.nextSibling;
+    const prev = container.previousSibling;
+
+    parent.insertBefore(tpl, container, true);
+    parent.removeChild(container);
+    freeze(container, 'parentNode', parent);
+    freeze(container, 'nextSibling', next);
+    freeze(container, 'previousSibling', prev);
+
+    if (next) {
+      freeze(next, 'previousSibling', container);
+      freeze(next, '__isFragmentSibling__', true);
+    }
+    if (prev) {
+      freeze(prev, 'nextSibling', container);
+      freeze(prev, '__isFragmentSibling__', true);
+    }
 
     container.__isMounted = true
   },
